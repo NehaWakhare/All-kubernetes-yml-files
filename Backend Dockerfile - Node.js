@@ -1,0 +1,11 @@
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --production
+COPY . .
+EXPOSE <PORT>
+CMD ["node", "server.js"]
+
+
+#<PORT>: 3000, 5000, 8000
+#server.js: Main entry file
