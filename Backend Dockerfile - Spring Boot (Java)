@@ -1,0 +1,5 @@
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY target/<JAR-FILE>.jar app.jar
+EXPOSE <PORT>
+ENTRYPOINT ["java", "-jar", "app.jar"]
