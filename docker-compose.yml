@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./<BACKEND-FOLDER>
+      dockerfile: Dockerfile
+    image: <USERNAME>/<BACKEND-IMAGE>:latest
+    container_name: <PROJECT>-backend
+    ports:
+      - "<HOST-PORT>:<CONTAINER-PORT>"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: <DB-NAME>
+      DB_USER: root
+      DB_PASSWORD: <DB-PASSWORD>
+      PORT: <CONTAINER-PORT>
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./<FRONTEND-FOLDER>
+      dockerfile: Dockerfile
+    image: <USERNAME>/<FRONTEND-IMAGE>:latest
+    container_name: <PROJECT>-frontend
+    ports:
+      - "<FRONTEND-PORT>:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: <PROJECT>-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: <DB-PASSWORD>
+      MYSQL_DATABASE: <DB-NAME>
+    ports:
+      - "<MYSQL-HOST-PORT>:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
